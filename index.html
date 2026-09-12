@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Cenamos?</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tarjeta">
+    <div class="contenido">
+      <p class="paso">Una pregunta rápida</p>
+      <h1>¿Te apetece cenar conmigo?</h1>
+      <p class="detalle">Elige un día, un sitio, y ya está. Solo necesito tu respuesta.</p>
+
+      <div class="opciones-si-no">
+        <button class="boton-si" id="btnSi">Sí, va</button>
+        <button class="boton-no" id="btnNo">No</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const btnNo = document.getElementById('btnNo');
+    activarBotonEsquivo(btnNo);
+
+    document.getElementById('btnSi').addEventListener('click', () => {
+      window.location.href = 'fecha.html';
+    });
+  </script>
+</body>
+</html>

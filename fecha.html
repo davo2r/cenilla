@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elige día y hora</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tarjeta">
+    <div class="contenido">
+      <p class="paso">Paso 2 de 4</p>
+      <h1>¿Qué día te viene bien?</h1>
+      <p class="detalle">Elige el día y la hora que prefieras. Si algo no encaja, lo cambiamos sin problema.</p>
+
+      <label for="fecha">Día</label>
+      <input type="date" id="fecha" required>
+
+      <label for="hora">Hora</label>
+      <input type="time" id="hora" required>
+
+      <button class="principal" id="continuar" disabled>Continuar</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const fecha = document.getElementById('fecha');
+    const hora = document.getElementById('hora');
+    const continuar = document.getElementById('continuar');
+
+    function revisar() {
+      continuar.disabled = !(fecha.value && hora.value);
+    }
+    fecha.addEventListener('input', revisar);
+    hora.addEventListener('input', revisar);
+
+    continuar.addEventListener('click', () => {
+      Cena.guardar('fecha', fecha.value);
+      Cena.guardar('hora', hora.value);
+      window.location.href = 'comida.html';
+    });
+  </script>
+</body>
+</html>

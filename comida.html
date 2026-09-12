@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elige el tipo de comida</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tarjeta">
+    <div class="contenido">
+      <p class="paso">Paso 3 de 4</p>
+      <h1>¿Qué te apetece comer?</h1>
+      <p class="detalle">Elige el tipo de restaurante que más te guste.</p>
+
+      <div class="grid-comida" id="grid">
+        <button class="opcion" data-valor="Sushi"><span class="emoji">🍣</span><span class="nombre">Sushi</span></button>
+        <button class="opcion" data-valor="Hamburguesería"><span class="emoji">🍔</span><span class="nombre">Hamburguesería</span></button>
+        <button class="opcion" data-valor="Pizzería"><span class="emoji">🍕</span><span class="nombre">Pizzería</span></button>
+        <button class="opcion" data-valor="Italiana"><span class="emoji">🍝</span><span class="nombre">Italiana</span></button>
+        <button class="opcion" data-valor="Mexicana"><span class="emoji">🌮</span><span class="nombre">Mexicana</span></button>
+        <button class="opcion" data-valor="Sorpréndeme"><span class="emoji">✨</span><span class="nombre">Sorpréndeme</span></button>
+      </div>
+
+      <button class="principal" id="continuar" disabled>Continuar</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const grid = document.getElementById('grid');
+    const continuar = document.getElementById('continuar');
+    let elegido = '';
+
+    grid.querySelectorAll('.opcion').forEach(boton => {
+      boton.addEventListener('click', () => {
+        grid.querySelectorAll('.opcion').forEach(b => b.classList.remove('activa'));
+        boton.classList.add('activa');
+        elegido = boton.dataset.valor;
+        continuar.disabled = false;
+      });
+    });
+
+    continuar.addEventListener('click', () => {
+      Cena.guardar('comida', elegido);
+      window.location.href = 'mensaje.html';
+    });
+  </script>
+</body>
+</html>

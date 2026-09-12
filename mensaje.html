@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un mensaje para ti</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tarjeta">
+    <div class="contenido" id="vistaFormulario">
+      <p class="paso">Paso 4 de 4</p>
+      <h1>¿Quieres dejarme algo escrito?</h1>
+      <p class="detalle">Es opcional. Si te apetece decirme algo, aquí tienes el espacio.</p>
+
+      <label for="mensaje">Tu mensaje (opcional)</label>
+      <textarea id="mensaje" placeholder="Escribe aquí..."></textarea>
+
+      <div class="resumen" id="resumen"></div>
+
+      <button class="principal" id="enviar">Enviar</button>
+      <p class="error-envio" id="errorEnvio">No se ha podido enviar. Vuelve a intentarlo en unos segundos.</p>
+    </div>
+
+    <div class="contenido confirmacion" id="vistaConfirmacion" style="display:none;">
+      <div class="icono">💌</div>
+      <h1>Enviado</h1>
+      <p class="detalle">Gracias por responder. Nos vemos pronto.</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const datos = Cena.todo();
+    const resumen = document.getElementById('resumen');
+    resumen.innerHTML =
+      `Día: ${datos.fecha || '—'}<br>` +
+      `Hora: ${datos.hora || '—'}<br>` +
+      `Comida: ${datos.comida || '—'}`;
+
+    const enviar = document.getElementById('enviar');
+    const errorEnvio = document.getElementById('errorEnvio');
+
+    enviar.addEventListener('click', async () => {
+      const mensaje = document.getElementById('mensaje').value;
+      Cena.guardar('mensaje', mensaje);
+
+      enviar.disabled = true;
+      enviar.textContent = 'Enviando...';
+      errorEnvio.style.display = 'none';
+
+      // ⚠️ Sustituye TU_ACCESS_KEY por la clave gratuita de https://web3forms.com
+      const ACCESS_KEY = 'TU_ACCESS_KEY';
+
+      try {
+        const respuesta = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: ACCESS_KEY,
+            subject: '¡Respuesta a la cena!',
+            dia: datos.fecha || 'no indicado',
+            hora: datos.hora || 'no indicado',
+            comida: datos.comida || 'no indicado',
+            mensaje: mensaje || '(sin mensaje)'
+          })
+        });
+        const resultado = await respuesta.json();
+
+        if (resultado.success) {
+          document.getElementById('vistaFormulario').style.display = 'none';
+          document.getElementById('vistaConfirmacion').style.display = 'block';
+        } else {
+          throw new Error('Envío no confirmado');
+        }
+      } catch (err) {
+        errorEnvio.style.display = 'block';
+        enviar.disabled = false;
+        enviar.textContent = 'Enviar';
+      }
+    });
+  </script>
+</body>
+</html>
